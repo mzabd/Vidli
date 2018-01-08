@@ -1,0 +1,61 @@
+﻿Create project
+==============
+by clicking both MVC and WebApi also single user ac
+
+ViewModel
+=========
+we need viewModel folder to contain class for view as Model class are suppose to act as domain class
+
+Partial Views
+=============
+Shared > add > _NavBar (by convention it starts wiht _) > click tick on partial views, so that it will not have a layout
+
+Rendering partial views: here we did it in _Layput.chtml >> @Html.Partial("name of partial view", can put model as second arg)
+
+collapse : put cursor and press cntrl + m (twice)
+
+using model pref in view
+========================
+@model Vidly.Models.Movie 
+ActionLink:
+==========
+@Html.ActionLink(
+    linkText,
+    actionName,
+    controllerName,
+    routeValues: new {
+        Param1Name= Param1Value, 
+        Param2Name = Param2Value 
+    },
+    htmlAttributes: null
+)
+
+will generate link as: /Controller/Action/Param1Value?Param2Name=Param2Value
+
+
+@model Vidly.ViewModels.RandomMovieViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+====================
+Code First Approach:
+====================
+
+Code First Migration
+--------------------
+*First install Entity Framework
+* Add a class to main porject as belpw
+    public class MyDbContext:DbContext 
+    {
+        public MyDbContext()
+        {
+ 
+        }
+    }
+* Tools > Nuget Package Manager > Package Manager Console > to enable migrations -(w) enable-migrations
+//To create migrations: (w) add-migration "Migration_Name"
+//to over right: (w) add-migration "name" -force
+//to generate databse throug migration: (w)update-database
+//cls to clear screen
