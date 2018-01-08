@@ -59,3 +59,7 @@ Code First Migration
 //to over right: (w) add-migration "name" -force
 //to generate databse throug migration: (w)update-database
 //cls to clear screen
+//for updating model for new entity in table or new business rules > we should create small changes > create migration 
+// > run in DB :: changes in Customer Model > add-Migration 'AddIsSubscribedCustomer' > update-databse
+//for populating table with data: do it by migration:: add-maigratin PopulateMembershipType
+//now inthe up method provide sql query in Sql() and at last > update-database
