@@ -1,3 +1,4 @@
+//this annotation is about alter column
 namespace Vidli.Migrations
 {
     using System;

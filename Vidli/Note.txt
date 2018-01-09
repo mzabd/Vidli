@@ -63,3 +63,27 @@ Code First Migration
 // > run in DB :: changes in Customer Model > add-Migration 'AddIsSubscribedCustomer' > update-databse
 //for populating table with data: do it by migration:: add-maigratin PopulateMembershipType
 //now inthe up method provide sql query in Sql() and at last > update-database
+
+AlterColumn:
+------------
+//put attribute like [Rquired] in Model class properties and then make a new migration and at last update db
+
+Query Object using EF: (in customer controller we did it for hard coded data in GetCustomer)
+----------------------
+1. we need a dbcontex to access DB. So we declare a private field in Controller:
+	private ApplicationDbContext _context;
+2. then we need to initialize it in constructor
+3. As dbcontext is a disposable object we need ot dispose it properly as below
+	  protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+4.now assigned _context.cusotmer to customers object which is a DBset for differed execution from db - 
+	a DBset is the collection of all entities in the context
+5. to get the customer data from db we need to iterate thru the customers object or we can do it by adding ToList() also using SingleOrDefalt() in Detail route
+6. Now we can populate customer table with some data as we are doing it as aribatry so no need it by query and migration and we will not get this data later from migration: 
+	rightClick dbo.Customers table of SqlServerObjectExplorer > view data > provide data
+5. Eager loading: to load related object : here Membershiptype is related object to customer, so to get the info of Membershiptype we need to
+	-need to load Customer and MembershipType together > use Include(Expressions) after _context.Customer in Customer controller
+
+	
