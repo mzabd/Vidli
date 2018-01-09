@@ -64,6 +64,17 @@ Code First Migration
 //for populating table with data: do it by migration:: add-maigratin PopulateMembershipType
 //now inthe up method provide sql query in Sql() and at last > update-database
 
+addColumn:
+---------
+//make new properties in desired model
+//create a new migration and update db
+
+Update column:
+--------------
+//make new migration
+//provide sql query with UPDATE
+//update db
+
 AlterColumn:
 ------------
 //put attribute like [Rquired] in Model class properties and then make a new migration and at last update db
@@ -86,4 +97,6 @@ Query Object using EF: (in customer controller we did it for hard coded data in 
 5. Eager loading: to load related object : here Membershiptype is related object to customer, so to get the info of Membershiptype we need to
 	-need to load Customer and MembershipType together > use Include(Expressions) after _context.Customer in Customer controller
 
-	
+Make a short cut for console Manager
+====================================
+tools > options > Environment > keyboard > type: packagemanagerconsole > in shortcut: hold alt key and press / and . >assign >ok/
