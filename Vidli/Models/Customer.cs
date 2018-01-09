@@ -14,6 +14,8 @@ namespace Vidli.Models
         public string Name { get; set; }
         public bool IsSubscribedToNewsletter { get; set; }
 
+        public DateTime? BirthdDate { get; set; }
+
         //to associate customer class with membership type we create a navigation property 
         //it is useful when we load an object and its related objects from db 
         public MembershipType MembershipType { get; set; }

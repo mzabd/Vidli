@@ -33,7 +33,7 @@ namespace Vidli.Controllers
         {
             //assigned context to customers object which is a DbSet
             //now the query will be executed when we iterate thru customers object or we can do it by adding ToList()
-            //also included Eager loading for memebershipType
+            //also included Eager loading for membershipType
             var customers = _context.Customers.Include(c => c.MembershipType).ToList();
             
             
@@ -44,7 +44,8 @@ namespace Vidli.Controllers
         public ActionResult Details(int id)
         {
             //using context with SingleOrDefault for getting one single customer
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            //also included Eager loading for membershipType
+            var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
                 return HttpNotFound();

@@ -238,6 +238,14 @@
     <Compile Include="Migrations\201801091726096_ChangesMembershipNameAttr.Designer.cs">
       <DependentUpon>201801091726096_ChangesMembershipNameAttr.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801091740125_ChangesMembershipName.cs" />
+    <Compile Include="Migrations\201801091740125_ChangesMembershipName.Designer.cs">
+      <DependentUpon>201801091740125_ChangesMembershipName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801091744511_AddedNullableCustomerBirthdate.cs" />
+    <Compile Include="Migrations\201801091744511_AddedNullableCustomerBirthdate.Designer.cs">
+      <DependentUpon>201801091744511_AddedNullableCustomerBirthdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -356,6 +364,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801091726096_ChangesMembershipNameAttr.resx">
       <DependentUpon>201801091726096_ChangesMembershipNameAttr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801091740125_ChangesMembershipName.resx">
+      <DependentUpon>201801091740125_ChangesMembershipName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801091744511_AddedNullableCustomerBirthdate.resx">
+      <DependentUpon>201801091744511_AddedNullableCustomerBirthdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
