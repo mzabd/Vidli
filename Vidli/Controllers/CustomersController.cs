@@ -27,6 +27,15 @@ namespace Vidli.Controllers
             _context.Dispose();
         }
 
+        public ActionResult New()
+        {
+            var membershiptTypes = _context.MembershipTypes.ToList();
+            //**in the case when we need to send several var from view we need to use a viewModel like here NewCustomerViewModel
+            //inittalize newCustomerViewModel using object intilizer
+            var viewModel = new NewCustomerViewModel {MembershipTypes = membershiptTypes};
+
+            return View(viewModel);
+        }
 
         // GET: Customers
         public ActionResult Index()
@@ -35,8 +44,6 @@ namespace Vidli.Controllers
             //now the query will be executed when we iterate thru customers object or we can do it by adding ToList()
             //also included Eager loading for membershipType
             var customers = _context.Customers.Include(c => c.MembershipType).ToList();
-            
-            
 
             return View(customers);
         }

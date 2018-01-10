@@ -69,10 +69,10 @@ addColumn:
 //make new properties in desired model
 //create a new migration and update db
 
-Update column:
+Update/insert column:
 --------------
 //make new migration
-//provide sql query with UPDATE
+//provide sql query with UPDATE/insert
 //update db
 
 AlterColumn:
@@ -100,3 +100,36 @@ Query Object using EF: (in customer controller we did it for hard coded data in 
 Make a short cut for console Manager
 ====================================
 tools > options > Environment > keyboard > type: packagemanagerconsole > in shortcut: hold alt key and press / and . >assign >ok/
+
+================
+Forms: leture: 38
+================
+1. Make a actionResult (new for example) in controller
+2. Create a view for it
+3. In chtml > Html.BeginForm("Name of the target Actinon", Controller)  - this is a begining tag of form - a form is also a disposable object
+	for this reason we add @using(Html.BegingForm(..)) {...} so it can be disposed and in the disposed method it will render the closing </form>
+4.to render modern responsive form: we need to follow special mark up like: wrap each input field in >> 
+	<div class="form-group"></div> - which is also bootstrap understand.
+5. Inside the div we can use raw html or Html.LabelFor(use a lambda expression for the targer properties from model);
+6. for textbox: we can use raw html or Html.TextBoxFor(m => m.Name) - this is helpful for like data-validatino auotimatically as per model
+7. as the second arg in Html.TextBoxFor(m => m.Name, 2nd) > we can pass an annonymous obj. like (.., new {@any propertis add to this object will render as html attrbutes})
+	Like: (.., new {@class="form-control"}) - this will give form a modern look and feel from bootstrap class
+Form-Lables:
+-----------
+if we want to change the label name from the property name of model there are two ways
+1. we cand do it with raw html <label for="Birthdate"> Date of Birth </label> - here 'for' is used to focus it for Birthdate properties
+2. we can use data-annotations in model porpeties like: [Display(Name= "Date of Birth")] for Birthdate properties
+
+Drop-Down: 40
+-------------
+1. check if there is already a dbset declared for your model, if not create it in identity model
+2. declare a context object for it in new route as: var membershipTypes = _context.MembershipTypes
+3.To add a dropDown in view: @Html.DropDownListFor(m => m.Customer.MembershipType,2nd arg, 3rd, 4th})
+	2nd arg: list of items for the dropdown (..., new SelectList(lsitOfItems, ))
+	: (..., new SelectList(Modle.MembershipTypes, property holds the value, property that holds the text))
+	3rd arg: " " - possibly as it will be at the top or "Select"
+	4th: the annonymous obj for html bootstrap
+
+Model Binding and using button:
+-------------------------------
+1. 

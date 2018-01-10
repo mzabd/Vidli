@@ -24,6 +24,10 @@ namespace Vidli.Models
     {
         
         public IDbSet<Customer> Customers { get; set;}
+        //to include the movie in migration need to add DdSet<Movie> in indentity model
+        public DbSet<Movie> Movies { get; set; }
+        //to include membership type 
+        public DbSet<MembershipType> MembershipTypes { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
