@@ -144,3 +144,10 @@ Edit form
 1. we changed the detail action in index view to Edit actin and added an action in Customer controller. There is a id param in view which will send to Edit
 2. in the Edit action: we initialize customer and membershiptype context for the particular viewModel (CustomerFormVeiwModel)
 3.return a view (here it is CustomerForm which will populated by data from customerFormViewModel)
+update:
+------
+4. One approach is to modify the current name of "create" action/view to 'save' (another by creating a new view name update)
+5. in the save action: we check if the customer has an id or not, if the id ==0 > it is a new customer, so add it db > if not - it is an existing one and update it in db
+6. in update (else): we need to first get the data of customer form db as per the id
+7. now we update it: and it can be in two ways: a. using TryUpdateModel() however it leads to poor security
+** as we are doing it as per customerId, we need to gram customer id from from, so we need to set it in from as hidden field

@@ -64,10 +64,29 @@ namespace Vidli.Controllers
 
         //action for receive form data
         [HttpPost]
-        public ActionResult Create(Customer customer) //MVC will automatically map request data to this obj which is model binding
-        {
-            //first we need to add it to context to add to db, however it will not add to db rather in memory
-            _context.Customers.Add(customer);
+        public ActionResult Save(Customer customer) //MVC will automatically map request data to this obj which is model binding
+        {   
+            //check whether the customer has an Id, if not (if 0) then it is a new one and add it to db
+            //else update it as it is an existing one
+            if (customer.Id == 0)
+            {
+                //first we need to add it to context to add to db, however it will not add to db rather in memory
+                _context.Customers.Add(customer);
+            }
+            else
+            {
+                //for update we need to get it from db first where id from db(context) == to customer id we receive :Lecture44 why single not singleDefault
+                var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
+                //now we can update data in two ways:
+                //1.tryupdatemodel(): however it leads to poor security
+                //TryUpdateModel(customerInDb); 
+                //2.we can do it manually by setting the new value to customer properties: more: lecture 44
+                customerInDb.Name = customer.Name;
+                customerInDb.BirthdDate = customer.BirthdDate;
+                customerInDb.MembershipTypeId = customer.MembershipTypeId;
+                customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+            }
+
             //dbcontext as change tracking mechnism any time we add/modify/delete
             //second: to persist this changes we need to 
             _context.SaveChanges();
