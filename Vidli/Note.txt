@@ -132,4 +132,6 @@ Drop-Down: 40
 
 Model Binding and using button:
 -------------------------------
-1. 
+1. add a button at the end
+2. make the "create" action in controller to pass from date with [HttpPost] annotation
+3.add a parameter for model binding: for example data for newcsutomerviewmodel, we need to pass a param that object type

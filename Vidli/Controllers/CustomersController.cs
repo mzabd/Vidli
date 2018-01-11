@@ -27,6 +27,7 @@ namespace Vidli.Controllers
             _context.Dispose();
         }
 
+        //action for form : 
         public ActionResult New()
         {
             var membershiptTypes = _context.MembershipTypes.ToList();
@@ -36,6 +37,14 @@ namespace Vidli.Controllers
 
             return View(viewModel);
         }
+
+        //action for receive form data
+        [HttpPost]
+        public ActionResult Create(NewCustomerViewModel viewModel) //MVC will automatically map request data to this obj which is model binding
+        {
+            return View();
+        }
+     
 
         // GET: Customers
         public ActionResult Index()
