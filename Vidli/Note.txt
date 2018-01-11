@@ -138,4 +138,9 @@ Model Binding and using button:
 4. now to add the data to db we need add it first to context as a part of our changes(add/modify/delete)
 5. persist this changes we need to save changes: _context.SaveChanges(). it will generate sql statement and all this will wraped in a transaction
 6. at this point we need to redirect to desired page (here it is list of customer)
-6.
+
+Edit form
+---------
+1. we changed the detail action in index view to Edit actin and added an action in Customer controller. There is a id param in view which will send to Edit
+2. in the Edit action: we initialize customer and membershiptype context for the particular viewModel (CustomerFormVeiwModel)
+3.return a view (here it is CustomerForm which will populated by data from customerFormViewModel)

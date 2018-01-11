@@ -1,4 +1,4 @@
-﻿@model Vidli.ViewModels.NewCustomerViewModel
+﻿@model Vidli.ViewModels.CustomerFormViewModel
 
 @{
     ViewBag.Title = "New";
@@ -15,17 +15,18 @@
     <div class="form-group">
         @*<label for="BirthdDate">Date of Birth</label>*@
         @Html.LabelFor(m => m.Customer.BirthdDate)
-        @Html.TextBoxFor(m => m.Customer.BirthdDate, new{@class ="form-control"})
-    </div>
-    //Ad a text box: for check box it is little differrent and we add some raw html as below
-    <div class="checkbox">
-        <label>
-            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsletter) Subscribed To Newsletter?
-        </label>
+        @*used an additional arg to format string for datetime*@
+        @Html.TextBoxFor(m => m.Customer.BirthdDate, "{0:d MMM yyyy}", new{@class ="form-control"}) 
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.MembershipTypeId)
         @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "MembershipName"), "Select Membership Type", new { @class = "form-control" })
+    </div>
+    //Ad a check box: for check box it is little differrent and we add some raw html as below
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsletter) Subscribed To Newsletter?
+        </label>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 }

@@ -27,31 +27,6 @@ namespace Vidli.Controllers
             _context.Dispose();
         }
 
-        //action for form : 
-        public ActionResult New()
-        {
-            var membershiptTypes = _context.MembershipTypes.ToList();
-            //**in the case when we need to send several var from view we need to use a viewModel like here NewCustomerViewModel
-            //inittalize newCustomerViewModel using object intilizer
-            var viewModel = new NewCustomerViewModel {MembershipTypes = membershiptTypes};
-
-            return View(viewModel);
-        }
-
-        //action for receive form data
-        [HttpPost]
-        public ActionResult
-            Create(Customer customer) //MVC will automatically map request data to this obj which is model binding
-        {
-            //first we need to add it to context to add to db, however it will not add to db rather in memory
-            _context.Customers.Add(customer);
-            //dbcontext as change tracking mechnism any time we add/modify/delete
-            //second: to persist this changes we need to 
-            _context.SaveChanges();
-            //redirect to customer list which is index in customer controller
-            return RedirectToAction("Index", "Customers");
-        }
-
         // GET: Customers
         public ActionResult Index()
         {
@@ -75,16 +50,51 @@ namespace Vidli.Controllers
             return View(customer);
         }
 
-        //public IEnumerable<Customer> GetCustomers()
-        //{
-        //    List<Customer> customers = new List<Customer>
-        //    {
-        //        new Customer{Id = 1, Name = "John Smith"},
-        //        new Customer{Id = 2, Name = "Marry Williams"},
 
-        //    };
+        //action for form : 
+        public ActionResult New()
+        {
+            var membershiptTypes = _context.MembershipTypes.ToList();
+            //**in the case when we need to send several var from view we need to use a viewModel like here NewCustomerViewModel
+            //inittalize newCustomerViewModel using object intilizer
+            var viewModel = new CustomerFormViewModel {MembershipTypes = membershiptTypes};
 
-        //    return customers;
-        //}
+            return View("CustomerForm",viewModel); //view, model
+        }
+
+        //action for receive form data
+        [HttpPost]
+        public ActionResult Create(Customer customer) //MVC will automatically map request data to this obj which is model binding
+        {
+            //first we need to add it to context to add to db, however it will not add to db rather in memory
+            _context.Customers.Add(customer);
+            //dbcontext as change tracking mechnism any time we add/modify/delete
+            //second: to persist this changes we need to 
+            _context.SaveChanges();
+            //redirect to customer list which is index in customer controller
+            return RedirectToAction("Index", "Customers");
+        }
+
+        //to edit a single customer 
+        public ActionResult Edit(int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            var membershipTypes = _context.MembershipTypes.ToList();
+            //if the customer doesnt exist
+            if (customer == null)
+                return HttpNotFound();
+            //the model behind this view will be new customer view model, and initialize customer and membershiptype
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypes = membershipTypes
+            };
+
+            //we will send the data to new view (by overrwiting) for edit for the viewModel
+            return View("CustomerForm", viewModel);
+        }
+
+
+
     }
 }
