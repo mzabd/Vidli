@@ -134,4 +134,8 @@ Model Binding and using button:
 -------------------------------
 1. add a button at the end
 2. make the "create" action in controller to pass from date with [HttpPost] annotation
-3.add a parameter for model binding: for example data for newcsutomerviewmodel, we need to pass a param that object type
+3.add a parameter for model binding: for example data for newcsutomerviewmodel, we need to pass a param that object type, but here we will bind it with customer as all the data are prefix wiht customer
+4. now to add the data to db we need add it first to context as a part of our changes(add/modify/delete)
+5. persist this changes we need to save changes: _context.SaveChanges(). it will generate sql statement and all this will wraped in a transaction
+6. at this point we need to redirect to desired page (here it is list of customer)
+6.

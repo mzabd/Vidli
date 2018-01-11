@@ -40,11 +40,17 @@ namespace Vidli.Controllers
 
         //action for receive form data
         [HttpPost]
-        public ActionResult Create(NewCustomerViewModel viewModel) //MVC will automatically map request data to this obj which is model binding
+        public ActionResult
+            Create(Customer customer) //MVC will automatically map request data to this obj which is model binding
         {
-            return View();
+            //first we need to add it to context to add to db, however it will not add to db rather in memory
+            _context.Customers.Add(customer);
+            //dbcontext as change tracking mechnism any time we add/modify/delete
+            //second: to persist this changes we need to 
+            _context.SaveChanges();
+            //redirect to customer list which is index in customer controller
+            return RedirectToAction("Index", "Customers");
         }
-     
 
         // GET: Customers
         public ActionResult Index()
