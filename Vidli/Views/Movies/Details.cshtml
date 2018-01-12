@@ -11,4 +11,5 @@
     <li>Date Added: @Model.DateAdded</li>
     <li>Number In Stock: @Model.NumberInStock</li>
 </ul>
+@Html.ActionLink("Update", "Edit", "Movies", new { id = Model.Id }, new { @class = "btn btn-primary" })
 

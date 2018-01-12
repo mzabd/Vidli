@@ -14,11 +14,32 @@ namespace Vidli.Models
         [StringLength(255)] //to make nvarchar as 255
         public string Name { get; set; }
         public Genre Genre { get; set; }
+
+        [Display(Name ="Release Date")]
         public DateTime ReleaseDate { get; set; }
+
+        [Display(Name = "Date Added")]
         public DateTime DateAdded { get; set; }
+
+        [Display(Name = "Number In Stock")]
         public short NumberInStock { get; set; }
+
         //create a foriegn key for Genre
-        public byte GenreId { get; set; }
+        [Display(Name = "Genre")]
+        public int GenreId { get; set; }
 
     }
 }
+
+//public DateTime DateAdded
+//{
+//get
+//{
+//    if (DateAdded == null)
+//    {
+//        DateAdded = DateTime.Now;
+//    }
+//    return DateAdded;
+//}
+//private set { DateAdded = value; }
+//}

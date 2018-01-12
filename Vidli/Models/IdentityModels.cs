@@ -28,6 +28,9 @@ namespace Vidli.Models
         public DbSet<Movie> Movies { get; set; }
         //to include membership type 
         public DbSet<MembershipType> MembershipTypes { get; set; }
+        //include genre
+        public DbSet<Genre> Genres { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
