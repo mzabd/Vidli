@@ -10,6 +10,7 @@ namespace Vidli.Models
     public class Movie
     {
         public int Id { get; set; }
+
         [Required] //for db schema: make it not nullable
         [StringLength(255)] //to make nvarchar as 255
         public string Name { get; set; }
