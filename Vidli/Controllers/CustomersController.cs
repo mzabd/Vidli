@@ -68,6 +68,7 @@ namespace Vidli.Controllers
 
         //action for receive form data
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer) //MVC will automatically map request data to this obj which is model binding
         {
             //for validation: check if the modelstate not valid return to the same view(form), if valid - proceed

@@ -233,3 +233,7 @@ Client Side validation
 	{
 		
 	}
+anti-forgery token: L-57
+------------------------
+1. to avoid anti-forgery: we need to put hepler method > @Html.AntyForgeryToken() before save button in form
+2. add annotation in Save-Actin as: [ValidateAntiforgeryToken]
