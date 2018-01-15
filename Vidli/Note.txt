@@ -204,3 +204,32 @@ update:
 7. now we update it: and it can be in two ways: a. using TryUpdateModel() however it leads to poor security
 ** as we are doing it as per customerId, we need to gram customer id from from, so we need to set it in from as hidden field
 **Troubleshooting entity validatin: L-47
+
+================
+Validation :L-50
+=================
+1. there are three steps
+	a. add data annotations in entities(model-properties)
+	b. use ModelStat.Valid - if valid change the flow of the progra if not return the same view (ex: customerController/save)
+	c.Add validatin message next to each field in the form //@Html.ValidationMessageFor(m=>m.) //to change the color use span>class: "field-validation-error " in css
+Validation by data annotation:
+-----------------------------
+1. see cheat sheet for data annotation :[Required]/ [Range(1,10)]/[Compare("Other property like password")]
+2. all these data annotation has default validation message, but these messages can be overrite, as for required: [Required(ErrorMessage ="...")]
+Custom Validation:
+------------------
+1. for example we implement a business rule like for any membership the cusotomer needs to be 18 years old except "Pay as you go"
+2. we make a class for this purpose which derives from ValidationAttribute class
+3.override IsValid() then put annotation in Birthdate properties of customer with the created class name, like [Min18YearsIfAMemeber]
+4. Follow the class Min!8YearsIfAMember: L-53
+5. Add validarion message place holder in the form view// also see validation summary: L-55
+
+Client Side validation
+----------------------
+* asp.net data-annotatio works for both client and server side validation..however custom valiation for server side is not works for client side, it needs custom jquery
+1. for client side we need the jqueryvalidaton bundle, however by default it is not refernced anywhere,
+2. To do the client sidd valdiation we first need ot enable jqueryvalidtion to that end of views as below:
+	@section script
+	{
+		
+	}

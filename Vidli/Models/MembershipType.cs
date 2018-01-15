@@ -16,7 +16,10 @@ namespace Vidli.Models
         [Required]
         public string MembershipName { get; set; }
 
-        
+        //to avoid magic number in  validation, delare some readonly static variable as below
+        public static readonly byte Unknown = 0;
+
+        public static readonly byte PayAsYouGo = 1;
 
     }
 }

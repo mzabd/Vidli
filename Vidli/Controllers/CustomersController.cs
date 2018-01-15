@@ -57,7 +57,11 @@ namespace Vidli.Controllers
             var membershiptTypes = _context.MembershipTypes.ToList();
             //**in the case when we need to send several var from view we need to use a viewModel like here NewCustomerViewModel
             //inittalize newCustomerViewModel using object intilizer
-            var viewModel = new CustomerFormViewModel {MembershipTypes = membershiptTypes};
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = new Customer(),
+                MembershipTypes = membershiptTypes
+            };
 
             return View("CustomerForm",viewModel); //view, model
         }
@@ -65,7 +69,22 @@ namespace Vidli.Controllers
         //action for receive form data
         [HttpPost]
         public ActionResult Save(Customer customer) //MVC will automatically map request data to this obj which is model binding
-        {   
+        {
+            //for validation: check if the modelstate not valid return to the same view(form), if valid - proceed
+            if (!ModelState.IsValid)
+            {
+                //the view model is customerForm view model
+                var viewModel = new CustomerFormViewModel
+                {
+                    Customer =  new Customer(),
+                    MembershipTypes = _context.MembershipTypes.ToList()
+
+                };
+
+                return View("CustomerForm", viewModel); 
+            }
+
+
             //check whether the customer has an Id, if not (if 0) then it is a new one and add it to db
             //else update it as it is an existing one
             if (customer.Id == 0)

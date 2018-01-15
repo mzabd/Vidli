@@ -10,13 +10,14 @@ namespace Vidli.Models
     {
         public int Id { get; set; }
 
-        [Required] //for db schema: make it not nullable
+        [Required(ErrorMessage = "Please Enter Customer's Name")] //for db schema: make it not nullable
         [StringLength(255)] //to make nvarchar as 255
         public string Name { get; set; }
 
         public bool IsSubscribedToNewsletter { get; set; }
-        [Display(Name = "Date of Birth")]
 
+        [Display(Name = "Date of Birth")]
+        [Min18YearsIfAMember]
         public DateTime? BirthdDate { get; set; }
 
         //to associate customer class with membership type we create a navigation property 

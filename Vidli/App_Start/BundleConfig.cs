@@ -28,7 +28,6 @@ namespace Vidli
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css", "~/Content/themes/base/jquery-ui.min.css",
                       "~/Content/themes/base/jquery.ui.datepicker.css",
-                      "~/Content/themes/base/jquery.ui.theme.css",
                       "~/Content/site.css"));
         }
     }
