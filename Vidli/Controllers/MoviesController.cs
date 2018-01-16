@@ -44,7 +44,7 @@ namespace Vidli.Controllers
 
         }
 
-        //for form
+        //form for new movie
         public ActionResult New()
         {
             //get list of genre to populate the dropbox in form
@@ -52,44 +52,58 @@ namespace Vidli.Controllers
             //initialize the MovieFromViewModel with gernes
             var viewModel = new MovieFormViewModel
             {
-               Genres = genres
+                Genres = genres
             };
 
             return View("MovieForm", viewModel);
         }
 
-        //populate data in form for edit
+        //populate data in form for edit an existing movie
         public ActionResult Edit(int id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
             var genre = _context.Genres.ToList();
 
+            if (movie == null)
+                return HttpNotFound();
+
             //we need to initialize moveviewmodel for 
-            var viewModel = new MovieFormViewModel
+            var viewModel = new MovieFormViewModel(movie)
             {
-                Movie = movie,
                 Genres = genre
             };
 
-            if (movie == null)
-                return HttpNotFound();
 
             return View("MovieForm", viewModel);
         }
 
         //save data from form to db
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
-           
+            //for validation: check if the modelstate not valid return to the same view(form), if valid - proceed
+            if (!ModelState.IsValid)
+            {
+                //the view model is customerForm view model
+                var viewModel = new MovieFormViewModel(movie)
+                {
+                    Genres = _context.Genres.ToList()
+                };
+
+                return View("MovieForm", viewModel);
+            }
+
             //if movie has no id
             if (movie.Id == 0)
             {
                 //it is a new move, so add to context
+                movie.DateAdded = DateTime.Now; //for date time added
                 _context.Movies.Add(movie);
             }
             else
             {
+                //or an existing movie
                 //get a single move data from db as per id
                 var movieInDb = _context.Movies.Single(m => m.Id == movie.Id);
                 //it is an existing move, so update

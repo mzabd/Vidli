@@ -16,12 +16,14 @@ namespace Vidli.Models
         public string Name { get; set; }
         public Genre Genre { get; set; }
 
+    
         [Display(Name ="Release Date")]
         public DateTime ReleaseDate { get; set; }
 
         [Display(Name = "Date Added")]
         public DateTime DateAdded { get; set; }
 
+        [Range(1,20)]
         [Display(Name = "Number In Stock")]
         public short NumberInStock { get; set; }
 

@@ -228,7 +228,7 @@ Client Side validation
 ----------------------
 * asp.net data-annotatio works for both client and server side validation..however custom valiation for server side is not works for client side, it needs custom jquery
 1. for client side we need the jqueryvalidaton bundle, however by default it is not refernced anywhere,
-2. To do the client sidd valdiation we first need ot enable jqueryvalidtion to that end of views as below:
+2. To do the client side valdiation we first need ot enable jqueryvalidtion to that end of views as below:
 	@section script
 	{
 		
@@ -237,3 +237,9 @@ anti-forgery token: L-57
 ------------------------
 1. to avoid anti-forgery: we need to put hepler method > @Html.AntyForgeryToken() before save button in form
 2. add annotation in Save-Actin as: [ValidateAntiforgeryToken]
+
+========
+Pure view model:
+==============
+L:60 >> instead of using movie object in genre use the required properties for form and use the view model
+We need to refactor codes in view/controller for this purpose too
