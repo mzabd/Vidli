@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Vidli
 {
@@ -11,6 +13,11 @@ namespace Vidli
         {
             // Web API configuration and services
 
+            //to enable cammle case
+            var settings = config.Formatters.JsonFormatter.SerializerSettings;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.Formatting = Formatting.Indented;
+            
             // Web API routes
             config.MapHttpAttributeRoutes();
 

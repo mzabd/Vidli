@@ -243,3 +243,47 @@ Pure view model:
 ==============
 L:60 >> instead of using movie object in genre use the required properties for form and use the view model
 We need to refactor codes in view/controller for this purpose too
+
+=======
+API
+=======
+Create/Configure WebApi:
+-----------------------
+1. Add a new folder to controller named Api
+2.Add a new controller to this folder >> righl click > add controller > Web Api 2 empty > name it"here CustomersContoller"
+3. For configur: open global.asax.cs > 
+
+Get /PSOT customer: GET/api/customers : L65
+------------------------------------------
+1. we set the return type of action for a list like IEnumerable
+2. before that create a private field foe applicationdbContext and initilaize it in construtor
+3. for a single customer we return by id
+4. for update use PUT/apii/../id with two param
+5.Now check api following L:66
+
+DTO: Data trnasfer object:
+-------------------------
+1. it is a plain data structure and use to transfer data from client to server and vice-verca
+2. as we are retrunign an object (like customer), when we change any property of it, it can easily break on client side
+3. so api should never recieve/return domain object, also using a domain object is not secured, a hacker can easily manipulate it
+4. so USe DTO: make a folder in solution as Dtos> bring a class named CustomerDto > put all the properteis except few
+
+Auto Mapper:
+-------------
+1. Open package Manager console>  install-package automapper -version:4.1 >
+2. Now create a mapping profile>> App_Start > add a new class named "MappingProfile" > which need to be derived from profile >
+> create ctor > Mapper.CreateMap<Source, target>(); and Mapper.CreateMap<target, source>();
+3. Now we need to load it when app starts>> Global.asax.cs >Mapper.Initialize(c => c.AddProfile<MappingProfile>());
+4.in the api > change customer by customerDto other as necessary (see code) like: _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+
+CamelCasing:
+-------------
+as JS using camel notation and in our Json it is pascal notation, to make it smooth we can do >> App_Start > WebApiConfig.cs
+> add:    var settings = config.Formatters.JsonFormatter.SerializerSettings;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+			settings.Formatting = Formatting.Indented;
+
+IHttpActionResult:
+------------------
+for restful convention to create resource the status code should be 201 or created not 200. So for more control return form action: 
+	- we return  IHttpActionResult instead of CutomerDto at customerController > for createCustomer
