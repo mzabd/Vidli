@@ -291,3 +291,32 @@ for restful convention to create resource the status code should be 201 or creat
 Test Api in Postoman
 --------------------
 for psot: slect raw> json >> click header >> header: content-type and value: application/json
+
+using JQuery in razor file
+-------------
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#customers .js-delete").on("click", function () {
+                var btn = $(this);
+                //if the confirm return true
+                if (confirm("Are you sure you want to delete this customer?")) {
+                    //we call the api for delete using jQuery ajax call by passing an object
+                    $.ajax({
+                        //first we set the url like api/customers/id
+                        //for id we can get it from button by data attribute
+                        //url: "/api/customers/" + $(this).attr("data-customer-id"),
+						url: "/api/customers/" + btn.attr("data-customer-id"),
+                        method: "DELETE",
+                        success: function() {
+                            //console.log("Success!");
+                            //to remove the particular row of that button click
+                            btn.parents("tr").remove();
+                        }
+                    });
+                };
+            });
+        });
+    </script>
+}
