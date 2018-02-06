@@ -8,9 +8,15 @@ namespace Vidli
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+            bundles.Add(new ScriptBundle("~/bundles/lib").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery-ui-1.12.1.min.js"));
+                        "~/Scripts/jquery-ui-1.12.1.min.js",
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/respond.js",
+                        "~/Scripts/bootbox.js",
+                        "~/Scripts/datatables/jquery.datatables.js",
+                        "~/Scripts/datatables/datatables.bootstrap.js"
+                ));
 
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -21,14 +27,11 @@ namespace Vidli
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js",
-                       "~/Scripts/bootbox.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css", "~/Content/themes/base/jquery-ui.min.css",
                       "~/Content/themes/base/jquery.ui.datepicker.css",
+                      "~/content/datatables/css/datatables.bootstrap.css",
                       "~/Content/site.css"));
         }
     }

@@ -290,7 +290,7 @@ for restful convention to create resource the status code should be 201 or creat
 
 Test Api in Postoman
 --------------------
-for psot: slect raw> json >> click header >> header: content-type and value: application/json
+for post: slect raw> json >> click header >> header: content-type and value: application/json
 
 =========================
 using JQuery in razor file
@@ -359,5 +359,13 @@ using bootstrap dialogbox: bootboxjs.com
         });
     </script>
 
-
-
+========================================
+using data table plugin:
+========================================
+open pacjage mangager console > install-package jquery.datatables -version:1.10.11
+we need use only 2 of many files in DataTables in bundleConfig:
+	                        "~/Scripts/DataTables/jquery.dataTables.js",
+                        "~/Scripts/DataTables/dataTables.bootstrap.js"
+also add datatable style sheet ot css bundle:
+					 "~/Content/DataTables/css/dataTables.bootstrap.cs",
+now use the code:  $("#customers").DataTable(); in jquery script

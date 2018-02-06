@@ -15,21 +15,25 @@
 else
 {
     <table id="customers" class="table	table-bordered	table-hover">
-        <tr>
-            <th>Customer</th>
-            <th>Membership Type</th>
-            <th>Delete Customer</th>
-        </tr>
-        @foreach (var customer in Model)
-        {
-          <tr>
-              <td>
-                 @Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)
-             </td>
-             <td>@customer.MembershipType.MembershipName</td>
-            <td><button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button></td>
-         </tr>
-        }
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Membership Type</th>
+                <th>Delete Customer</th>
+            </tr>
+       </thead> 
+        <tbody>
+            @foreach (var customer in Model)
+            {
+              <tr>
+                  <td>
+                     @Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)
+                 </td>
+                 <td>@customer.MembershipType.MembershipName</td>
+                <td><button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button></td>
+             </tr>
+            }
+        </tbody>
     </table>
 }
 
@@ -40,6 +44,9 @@ else
 {
     <script>
         $(document).ready(function () {
+            // using data table
+            $("#customers").DataTable();
+
             //change the on click by using the class as filter to make it more efficient
             $("#customers ").on("click", ".js-delete", function () {
 
