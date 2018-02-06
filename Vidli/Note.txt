@@ -264,7 +264,7 @@ Get /PSOT customer: GET/api/customers : L65
 DTO: Data trnasfer object:
 -------------------------
 1. it is a plain data structure and use to transfer data from client to server and vice-verca
-2. as we are retrunign an object (like customer), when we change any property of it, it can easily break on client side
+2. as we are returning an object (like customer), when we change any property of it, it can easily break on client side
 3. so api should never recieve/return domain object, also using a domain object is not secured, a hacker can easily manipulate it
 4. so USe DTO: make a folder in solution as Dtos> bring a class named CustomerDto > put all the properteis except few
 
@@ -287,3 +287,7 @@ IHttpActionResult:
 ------------------
 for restful convention to create resource the status code should be 201 or created not 200. So for more control return form action: 
 	- we return  IHttpActionResult instead of CutomerDto at customerController > for createCustomer
+
+Test Api in Postoman
+--------------------
+for psot: slect raw> json >> click header >> header: content-type and value: application/json

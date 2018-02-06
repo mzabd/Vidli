@@ -71,17 +71,17 @@ namespace Vidli.Controllers.Api
         //the url is like: PUT/api/customers/id
         //id form url to get the customer from db and customer from request body i.e. the updated info
         [HttpPut]
-        public void UpdateCustomer(int id, CustomerDto customerDto) 
+        public IHttpActionResult UpdateCustomer(int id, CustomerDto customerDto) 
         {
             //if request is not valid
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
             //get the customer from db
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             //if customer is not found 
             if (customerInDb == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return NotFound();
             //map cusotmer to dto, and also need to pass the second arg i.e. customerInDb to load it in form
             Mapper.Map<CustomerDto, Customer>(customerDto, customerInDb);
 
@@ -89,23 +89,27 @@ namespace Vidli.Controllers.Api
             //save the chagnes to context
             _context.SaveChanges();
 
+            return Ok();
+
         }
 
         //for Delete
         //DELETE /api/customers/id
         [HttpDelete]
-        public void DeleteCustomer(int id)
+        public IHttpActionResult DeleteCustomer(int id)
         {
             //get the customer from db
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             //if customer is not found 
             if (customerInDb == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return NotFound();
 
             //remove customer from db
             _context.Customers.Remove(customerInDb);
             _context.SaveChanges();
+
+            return Ok();
         }
 
 
