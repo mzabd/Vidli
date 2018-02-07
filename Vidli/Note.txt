@@ -369,3 +369,19 @@ we need use only 2 of many files in DataTables in bundleConfig:
 also add datatable style sheet ot css bundle:
 					 "~/Content/DataTables/css/dataTables.bootstrap.cs",
 now use the code:  $("#customers").DataTable(); in jquery script
+
+use Api as source of data for use datatable: L-79
+-----------------------------------------
+- we need to provide a configaration object inside .DataTable({}) > in this object we need a property call ajax whihc is an object too
+ .DataTable({
+	ajax:{
+		  url: "/api/customers",
+           dataSrc: ""
+	}, //next we specify column which is an array and for each column we suply an obj
+	column: [
+		{
+			//in this object we specify various properties of this column
+			---
+		}
+	]
+ })

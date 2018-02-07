@@ -8,34 +8,18 @@
 @Html.ActionLink("New Customer", "New", "Customers", null, new { @class = "btn btn-primary" })
 <br /><br />
 
-@if (!Model.Any())
-{
-    <p>We dont have a customer yet!</p>
-}
-else
-{
-    <table id="customers" class="table	table-bordered	table-hover">
-        <thead>
-            <tr>
-                <th>Customer</th>
-                <th>Membership Type</th>
-                <th>Delete Customer</th>
-            </tr>
-       </thead> 
-        <tbody>
-            @foreach (var customer in Model)
-            {
-              <tr>
-                  <td>
-                     @Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)
-                 </td>
-                 <td>@customer.MembershipType.MembershipName</td>
-                <td><button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button></td>
-             </tr>
-            }
-        </tbody>
-    </table>
-}
+<table id="customers" class="table	table-bordered	table-hover">
+    <thead>
+    <tr>
+        <th>Customer</th>
+        <th>Membership Type</th>
+        <th>Delete Customer</th>
+    </tr>
+    </thead> 
+    <tbody>
+
+    </tbody>
+</table>
 
 
 @*add jquery code*@
@@ -45,7 +29,33 @@ else
     <script>
         $(document).ready(function () {
             // using data table
-            $("#customers").DataTable();
+            //also use api for source of dataTable and after that we dont need foreach block for rendering data from server
+            //but table should be above for placeholder,
+            //also we dont need the list of customer in controller as we are gettinng data from api
+            $("#customers").DataTable({
+                ajax: {
+                    url: "/api/customers",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function(data, type, customer) {
+                            return "<a href='/customers/details/" + customer.id + "'>" + customer.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-customer-id=" + data + ">Delete</button>";
+                        }
+                    }
+
+                ]
+            });
 
             //change the on click by using the class as filter to make it more efficient
             $("#customers ").on("click", ".js-delete", function () {

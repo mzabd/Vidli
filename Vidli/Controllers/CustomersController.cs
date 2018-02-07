@@ -33,9 +33,9 @@ namespace Vidli.Controllers
             //assigned context to customers object which is a DbSet
             //now the query will be executed when we iterate thru customers object or we can do it by adding ToList()
             //also included Eager loading for membershipType
-            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
+            //var customers = _context.Customers.Include(c => c.MembershipType).ToList(); //since we are rendering data using api thru ajax call in razor view
 
-            return View(customers);
+            return View();
         }
 
         public ActionResult Details(int id)
