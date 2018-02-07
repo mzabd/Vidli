@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -23,10 +24,14 @@ namespace Vidli.Controllers.Api
 
         //as we return a list of object i.e customer by convention it will resoponse to 
         //GET/api/customer
-        public IEnumerable<CustomerDto> GetCustomers()
+        public IHttpActionResult GetCustomers()
         {
             //return the list of customer from Customers table in db
-            return _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>); //using select, for mapping and referncing
+            var customerDtos = _context.Customers
+                .Include(c => c.MembershipType)
+                .Select(Mapper.Map<Customer, CustomerDto>); //using select, for mapping and referncing
+
+            return Ok(customerDtos);
         }
 
         public IHttpActionResult GetCustomer(int id) //usning IHttpActionResult

@@ -32,7 +32,7 @@
             //also use api for source of dataTable and after that we dont need foreach block for rendering data from server
             //but table should be above for placeholder,
             //also we dont need the list of customer in controller as we are gettinng data from api
-            $("#customers").DataTable({
+            var table = $("#customers").DataTable({
                 ajax: {
                     url: "/api/customers",
                     dataSrc: ""
@@ -45,7 +45,7 @@
                         }
                     },
                     {
-                        data: "name"
+                        data: "membershipType.membershipName"
                     },
                     {
                         data: "id",
@@ -56,6 +56,8 @@
 
                 ]
             });
+
+            //
 
             //change the on click by using the class as filter to make it more efficient
             $("#customers ").on("click", ".js-delete", function () {
@@ -75,7 +77,9 @@
                             success: function() {
                                 //console.log("Success!");
                                 //to remove the particular row of that button click
-                                 btn.parents("tr").remove();
+                                 //btn.parents("tr").remove();
+                                //to remove entire row from data table
+                                table.row(btn.parents("tr")).remove().draw();
                             }
                         });
                     }

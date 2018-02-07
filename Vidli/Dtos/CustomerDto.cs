@@ -20,8 +20,7 @@ namespace Vidli.Dtos
         //[Min18YearsIfAMember] // for api we comment out it
         public DateTime? BirthdDate { get; set; }
 
-        //to associate customer class with membership type we create a navigation property 
-        //it is useful when we load an object and its related objects from db 
+        public MembershipTypeDto MembershipType { get; set; } 
 
 
         //(create foriegn key)

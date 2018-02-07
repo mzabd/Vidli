@@ -385,3 +385,13 @@ use Api as source of data for use datatable: L-79
 		}
 	]
  })
+
+ To Add membership type: by Eager loading
+ ----------------------------------------
+ go to Api > customerController > in getCustomers use inlclude()...
+ also as we dont have membership type in cusotmerDto we need to add an new class as MembershipTypeDto for id and name
+ third, we need to add this membershiptypeDto to auto mapper as >  Mapper.CreateMap<MembershipType, MembershipTypeDto>();
+change in dataTable code in Index view for second column data from name to membershipType.membershipName
+**Data table bug L-81 : rmoving row for delete from table, but not from internal dataTable list >> to fix: put dataTable in a vriable 
+		- var table = ...
+		- inside success > use table.row(btn.parents("tr")).remove().draw(); to remove from data table
