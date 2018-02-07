@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Data.Entity;
 using System.Web.Http;
 using AutoMapper;
 using Vidli.Dtos;
@@ -23,9 +24,11 @@ namespace Vidli.Controllers.Api
 
         //as we return a list of object i.e customer by convention it will resoponse to 
         //GET/api/movies
-        public IEnumerable<MovieDto> GetMovies()
+        public IHttpActionResult GetMovies()
         {
-            return _context.Movies.ToList().Select(Mapper.Map<Movie,MovieDto>);
+            var movieDtos = _context.Movies.Include(m => m.Genre).Select(Mapper.Map<Movie,MovieDto>);
+
+            return Ok(movieDtos);
         }
 
         //GET/api/movies/id

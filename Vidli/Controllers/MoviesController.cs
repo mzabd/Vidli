@@ -27,9 +27,9 @@ namespace Vidli.Controllers
         public ActionResult Index()
         {
             //included Eager loading for Genre
-            var movies = _context.Movies.Include(m => m.Genre ).ToList();
+            //var movies = _context.Movies.Include(m => m.Genre ).ToList(); //we dont need list of movie as we are using datatable
 
-            return View(movies);
+            return View();
         }
 
         public ActionResult Details(int id)

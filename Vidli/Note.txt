@@ -292,9 +292,9 @@ Test Api in Postoman
 --------------------
 for post: slect raw> json >> click header >> header: content-type and value: application/json
 
-=========================
-using JQuery in razor file
-==========================
+=====================================
+using JQuery in razor file to delete
+====================================
 @section scripts
 {
     <script>
@@ -372,8 +372,9 @@ now use the code:  $("#customers").DataTable(); in jquery script
 
 use Api as source of data for use datatable: L-79
 -----------------------------------------
+- after using data-table we remove the table razor code as we dont need server code for datatable
 - we need to provide a configaration object inside .DataTable({}) > in this object we need a property call ajax whihc is an object too
- .DataTable({
+ $("#customers").DataTable({
 	ajax:{
 		  url: "/api/customers",
            dataSrc: ""
@@ -385,6 +386,8 @@ use Api as source of data for use datatable: L-79
 		}
 	]
  })
+
+ - we also need to delere list of movie from movie controler (not api) as we are getting movie list by data table
 
  To Add membership type: by Eager loading
  ----------------------------------------

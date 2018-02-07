@@ -25,6 +25,8 @@ namespace Vidli.Dtos
         [Range(1, 20)]
         public short NumberInStock { get; set; }
 
+        public GenreDto Genre { get; set; }
+
         //create a foriegn key for Genre
         public int GenreId { get; set; }
     }
