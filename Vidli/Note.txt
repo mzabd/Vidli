@@ -398,3 +398,58 @@ change in dataTable code in Index view for second column data from name to membe
 **Data table bug L-81 : rmoving row for delete from table, but not from internal dataTable list >> to fix: put dataTable in a vriable 
 		- var table = ...
 		- inside success > use table.row(btn.parents("tr")).remove().draw(); to remove from data table
+
+--------------------------------------------------------------------------------------------------------------------
+Authentication:
+==============
+** add the partial view for longin i.e.  @Html.Partial("_LoginPartial") to the _NavBar.chtml
+** pirmary authencitation code is already in soulution like in initialModel migration, identity model and Account views
+** L-91:  we need to use [Authourize] attr. which is a filter for authorization. When we apply this attr. to an action before
+the action execution it checks if the current user is logged in or not..if not it will redirect the user to the login page
+  - we can apply this attr. even for a entire controller (so for all actions in that controller)
+  - we can apply this attr. also globally so it will be appy to all controllers actions
+** for our solution we like to apply it globally for all controllers actions > App_Start > FilterConfig > here we can register global filter
+	-  filters.Add(new AuthorizeAttribute()); > it will block all annonymous user even access the home page
+	- if we want the annonymous user to access only the home page > go to home controlle > set [AllowAnonymous] before the class
+
+Seeding user and roles:L-92
+---------------------------
+**for example we want to restrict movie management to store manager only--------------
+ 1. we need to create that particular role in our app
+ 2. And when we deploy the app we should have a user to assign to this role
+- register a guest user as guest@vildi.com
+- go to AccountController > async Register() > modify the logic of this action to assign any new user as store manager
+	>> here we are doing so to populat the database with a user for store mangerd role (2 req.) this is Temp Code, which we will remove later
+	>> Temp Code: to create a user > roleStore and roleManager (temp code) > after that create a new user after building the solutinon
+	>>Now rmove all temp code for cretings user
+	>> we have two user one guest and one adimin, now we need to add those to db
+	>> make a migration > open the migration file which is empty now > need to put the sql script for it
+		>>> quick way to do it > App_Data > open apnet-vidli db > Tables > r.click AspNetUsers > show table data 
+			> select both created data > r.click and select script > copy > go to migratin Up > sql(@" copy those here ")
+			> back to sqlServerObjectExplorer > aspnet-Vidli > tables > aspNetRoles >r.c .. sript > copy and paste in migrtion
+			> back to sqlServerObjectExplorer > aspnet-Vidli > tables > aspNetUserRoles
+			> now remove those from db > aspNetRoles > viw data > r.c delte ..also for AspNetUSers
+			> run the migration by update-database
+
+working with roles L 93
+-----------------------
+- for user with less previlige we can make lot of if else to show which should be for which user but that is comples
+- so it is better to create a new simple view for less previliged user > we create a new view in Movie copy of index as ReadOnlyList
+- also for consistency rename the index as list
+- from ReadOnlyList delte the necessary fields like link, delete which needed for create, update and delete
+- now go to moveController > inside Index Action > add if (User.IsInRole("CanManageMovies")) return View("List") else return View("ReadOnlyList")
+- now we can access by two roles created in two different views, however still there are security holes as the geuset can edit movie by putting new in url
+- to solve it put > [Authorise(Roles ="CanManageMovies, ohter user if we wish")]
+- to avoid magic string of "CanManageMovies" > make a static class in models named RoleName and have a const. for it
+
+Adding more field for user registration: L94
+---------------------------------------
+** We may wish to add more fields for user reg. along with basic fields are given in ASP.NET, like a DrivingLicence for user
+- first, we need to start with model class i.e. IdentityModels.cs > ApplicationUser class > public string DrivingLicence { get; set; }
+- dcorate it with some attributes like [required] , so we changed the domain and for that reason we need to create migration
+- add-migration AddDrivingLicenseToApplicationUser > update-database :: already created user will receive an empty string for this field not null 
+- next, we need to go to views > account > register > crete a div for this field as required
+- however our driving licence is not found here as the view is rendering RegisterViewModel > so go to that model (which is inside AccountViewModel 
+> add that field inside it > 
+- finially, when the form is posted we need to get this drivinglicense and put it in the domain object, So go to >Controller > AccountController > Register(RegisterViewModel model)
+> initilaize the driving license inside ApplicationUser

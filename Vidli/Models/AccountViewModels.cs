@@ -64,6 +64,11 @@ namespace Vidli.Models
 
     public class RegisterViewModel
     {
+        //for new field of DrivingLicence
+        [Required]
+        [Display(Name = "Driving Licence")]
+        public string DrivingLicence { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

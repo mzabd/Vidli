@@ -28,8 +28,10 @@ namespace Vidli.Controllers
         {
             //included Eager loading for Genre
             //var movies = _context.Movies.Include(m => m.Genre ).ToList(); //we dont need list of movie as we are using datatable
+            if (User.IsInRole(RoleName.CanManageMovies))
+                return View("List");
 
-            return View();
+            return View("ReadOnlyList");
         }
 
         public ActionResult Details(int id)
@@ -40,11 +42,10 @@ namespace Vidli.Controllers
                 return HttpNotFound();
             return View(movie);
 
-
-
         }
 
         //form for new movie
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult New()
         {
             //get list of genre to populate the dropbox in form

@@ -31,3 +31,8 @@ textarea {
 .input-validation-error {
     border: 2px solid red;
 }
+
+
+table a:not(.btn), .table a:not(.btn) {
+    text-decoration: none;
+}
