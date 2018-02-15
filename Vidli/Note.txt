@@ -592,5 +592,15 @@ Toast Notification:
 -------------------
 * we will use a very popular jQuery plugin called toaster. So
 package console > install-package toastr > bundleConfig > css bundle > ~/Content/site.css" > and in lib > 
-> go to form > use toastr.success("message) in .done section > 
+> go to form > use toastr.success("message) in .done section > also need to put name="customer" attr in input field
 
+Client side validation:
+-----------------------
+*In bundleConfig there is a bunlde "~/bundles/jqueryval" for jquery validation. We need to include jQuery validation in pages where needed
+For example in the rental new form we can add this inside script section as > @Scripts.Render("~/bundles/jqueryval")
+- we can add "reqiured" in the form input field like in customer and jQuery validation will understand it
+- plugin validation: we can use $("#newRental").validate() and put submission code inside it, see code
+- Custom validator: we need it for like if we type any letter in customer field it will accept but which is not valid. How:
+		> before (n#ewRental).validate > .validatro.addMethod("validCustomer", function(... >
+		> to use it > in the customer input field > data-rule-validCustomer = "true"
+		> we need to clear form, reset vm in .done()

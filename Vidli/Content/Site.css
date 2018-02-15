@@ -24,11 +24,16 @@ textarea {
 }
 
 /*custom css*/
-.field-validation-error {
+
+/*form error message to shwo as red */
+.field-validation-error,
+label.error{
     color: red;
 }
 
-.input-validation-error {
+/*invalid fields with red border*/
+.input-validation-error, 
+input.error{
     border: 2px solid red;
 }
 
@@ -36,3 +41,5 @@ textarea {
 table a:not(.btn), .table a:not(.btn) {
     text-decoration: none;
 }
+
+

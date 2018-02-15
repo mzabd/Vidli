@@ -12,13 +12,13 @@
         @*adding another div as the text boxes are wraped wiht another div by typeahead as poition relative 
             for better visual alignment of both textbox and add style for this class at typeahead.css*@
         <div class="tt-container"> 
-            <input type="text" id="customer" value="" class="form-control" />
+            <input type="text" id="customer"  name="customer"  data-rule-validCustomer="true" required value="" class="form-control" />
         </div>
     </div>
     <div class="form-group">    
             <label>Movie</label>
         <div class="tt-container">
-            <input type="text" id="movie" value="" class="form-control" />
+            <input type="text" id="movie" name="movie"  data-rule-validMovie="true"  value="" class="form-control" />
         </div>
     </div>
     @*ul to contain movie selection. also used bootstrap grid system for better look n feel*@
@@ -34,6 +34,7 @@
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
             //declare veiwmodel object for client!!
@@ -87,23 +88,55 @@
                     vm.MovieIds.push(movie.id);
                 });
 
-            //to post the form
-            $("#newRental").submit(function(e) {
-                //to prevent submit form normally as usual
-                e.preventDefault();
-                //instead of normal psot we will use ajax
-                $.ajax({
-                        url: "/api/newRental",
-                        method: "post",
-                        data: vm
-                    })
-                .done(function() {
-                        toastr.success("Rental successflly recorded");
-                    })
-                .fail(function() {
-                        toastr.error("Somehting unexpected happened"); 
-                });
+            //cusotom validator for customer
+            $.validator.addMethod("validCustomer", function() {
+                //here we check that our vm has property called CustomerId and which is not 0
+                return vm.CustomerId && vm.CustomerId !== 0;
+            }, "Please select a valid customer"); //also added an error message
+
+            //cusotom validator for Movie
+            $.validator.addMethod("validMovie",
+                function() {
+                    //here we check that at least one movie is selecte so we check the array length
+                    return  vm.MovieIds.length > 0;
+                },
+                "Please select at least one movie");
+
+            //for validation
+            var validator = $("#newRental").validate({
+                //to post the form
+                submitHandler: function() {
+                    //to prevent submit form normally as usual
+                   // e.preventDefault(); not work here 
+                    //instead of normal psot we will use ajax
+                    $.ajax({
+                            url: "/api/newRental",
+                            method: "post",
+                            data: vm
+                        })
+                        .done(function() {
+                            toastr.success("Rental successflly recorded");
+
+                            //to clear the input field after success
+                            $("#customer").typeahead("val", "");
+                            $("#movie").typeahead("val", "");
+                            $("#movies").empty("val", "");
+                            //also need to reset view model by resetn g movieIds to empty array
+                            vm = { MovieIds: [] }
+                            //also reset form interms of validation
+                            validator.resetForm();
+                        })
+                        .fail(function() {
+                            toastr.error("Somehting unexpected happened"); 
+                        });
+
+                    //to prevent submit form normally
+                    return false;
+                }
             });
+
+           
+ 
         });
     </script>
 
