@@ -24,12 +24,23 @@ namespace Vidli.Controllers.Api
 
         //as we return a list of object i.e customer by convention it will resoponse to 
         //GET/api/customer
-        public IHttpActionResult GetCustomers()
+        public IHttpActionResult GetCustomers(string query = null) //usnig param for filtering customer list i.e if query is provide as name it will find that name or it will get the list of all
         {
             //return the list of customer from Customers table in db
-            var customerDtos = _context.Customers
-                .Include(c => c.MembershipType)
-                .Select(Mapper.Map<Customer, CustomerDto>); //using select, for mapping and referncing
+            //var customerDtos = _context.Customers
+            //    .Include(c => c.MembershipType)
+            //    .ToList()
+            //    .Select(Mapper.Map<Customer, CustomerDto>); //using select, for mapping and referncing
+            var customerQuery = _context.Customers
+                .Include(c => c.MembershipType);
+
+            //apply filter
+            if (!String.IsNullOrWhiteSpace(query))
+            {
+                customerQuery = customerQuery.Where(c => c.Name.Contains(query));
+            }
+
+            var customerDtos = customerQuery.ToList().Select(Mapper.Map<Customer, CustomerDto>);
 
             return Ok(customerDtos);
         }

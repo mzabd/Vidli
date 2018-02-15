@@ -60,6 +60,7 @@ namespace Vidli.Controllers
         }
 
         //populate data in form for edit an existing movie
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult Edit(int id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
@@ -81,6 +82,7 @@ namespace Vidli.Controllers
         //save data from form to db
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult Save(Movie movie)
         {
             //for validation: check if the modelstate not valid return to the same view(form), if valid - proceed

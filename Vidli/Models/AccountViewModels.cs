@@ -8,6 +8,16 @@ namespace Vidli.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Driving Licence")]
+        public string DrivingLicence { get; set; }
+
+        //for phone field
+        [Required]
+        [MaxLength(50, ErrorMessage = "Phone number cannot be longer than 50 characters.")]
+        [Display(Name = "Phone Number")]
+        public string Phone { get; set; }
     }
 
     public class ExternalLoginListViewModel
@@ -68,6 +78,12 @@ namespace Vidli.Models
         [Required]
         [Display(Name = "Driving Licence")]
         public string DrivingLicence { get; set; }
+
+        //for phone field
+        [Required]
+        [MaxLength(50, ErrorMessage = "Phone number cannot be longer than 50 characters.")]
+        [Display(Name="Phone Number")]
+        public string Phone { get; set; }
 
         [Required]
         [EmailAddress]

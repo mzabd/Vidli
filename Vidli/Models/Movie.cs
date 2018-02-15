@@ -27,6 +27,8 @@ namespace Vidli.Models
         [Display(Name = "Number In Stock")]
         public short NumberInStock { get; set; }
 
+        public byte NumberAvailable { get; set; }
+
         //create a foriegn key for Genre
         [Display(Name = "Genre")]
         public int GenreId { get; set; }

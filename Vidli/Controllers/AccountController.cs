@@ -154,7 +154,10 @@ namespace Vidli.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email, Email = model.Email, DrivingLicence = model.DrivingLicence
+                    UserName = model.Email,
+                    Email = model.Email,
+                    DrivingLicence = model.DrivingLicence,
+                    Phone = model.Phone
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -377,7 +380,10 @@ namespace Vidli.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser //add driving license 
+                {
+                    UserName = model.Email, Email = model.Email, DrivingLicence = model.DrivingLicence
+                };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

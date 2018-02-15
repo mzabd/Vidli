@@ -446,10 +446,151 @@ Adding more field for user registration: L94
 ---------------------------------------
 ** We may wish to add more fields for user reg. along with basic fields are given in ASP.NET, like a DrivingLicence for user
 - first, we need to start with model class i.e. IdentityModels.cs > ApplicationUser class > public string DrivingLicence { get; set; }
-- dcorate it with some attributes like [required] , so we changed the domain and for that reason we need to create migration
+- decorate it with some attributes like [required] , so we changed the domain and for that reason we need to create migration
 - add-migration AddDrivingLicenseToApplicationUser > update-database :: already created user will receive an empty string for this field not null 
 - next, we need to go to views > account > register > crete a div for this field as required
 - however our driving licence is not found here as the view is rendering RegisterViewModel > so go to that model (which is inside AccountViewModel 
 > add that field inside it > 
 - finially, when the form is posted we need to get this drivinglicense and put it in the domain object, So go to >Controller > AccountController > Register(RegisterViewModel model)
 > initilaize the driving license inside ApplicationUser
+
+Loging thru Social sites:
+-------------------------
+** the social sites like fb, google, twitter use a authention protocol called "OAuth" i.e. Open Authorization
+** for example: Z is new member and wants to login in vidli by fb > first we need to register vidli wiht fb to create some kind of partnership
+   > fb will provide a Api key and a secret like username and password > when Z wants to login thru fb > then vidli will use Api key and secret so that fb knows that it is vidli
+   > to avoid hacker we use https or secure http protocol > the data exchange will be encrypted so no one can intercept > when Z logs into fb to enter vidli
+   > fb tells Z that vidli wants to access some of his info > now Z can authorize vidli to access those info > Now fb will redirect Z to vidli
+   > fb will also pass an authorization token > this token tells vidli that fb could able to successfully authenticate this user
+   > vidli send the token along with key and secret back to fb > this is done to avoid hacking > then fb probide an access token to get some user info
+**  Mechanics for social login: we need to follow two steps
+	1. Enable SSL(for secure communication by a secure channel)
+	2. Regsiter app with fb
+** The process:
+ >> to enable SSL: > Select Slolution Expl(vidli) and press F4 to get projectProperties > set ssl enable to "true" > now we will find a SSL url
+  > copy that SSL Url > r.click project and go to properties > Web > Project Url > replace it wiht new address > run the app > there will be dialog boxes click yes
+  >> we can still access the site with previous usl > so go to App_start > FilterConfig > filters.Add(new RequireHttpsAttribute()); > now it will not be available in http channel
+**Register with fb:
+ go to /developers.facebook.com > register as a developer > after login > add a new app > go as required and put the url of site like: https://localhost:44369
+ > copy the App Id from dashboard > go to solution >App_start > Startup.Auth > comment out fb authentication > 
+ > need to run : Install-Package Microsoft.Owin.Security.Facebook > also need some trouble shooting: https://stackoverflow.com/questions/46850461/cant-load-url-the-domain-of-this-url-isnt-included-in-the-apps-domains-in-fa
+ > after giving email > there is an error for validaton exception due to to new field of dricing license which is not in rgistration via social login > to solve it >
+ > solution > views > Account > ExternalLoginConfirmation > dopy driving field form Register > Go to AccountViewModel as the view model are different here > 
+ > in class: ExternalLoginConfirmationViewModel > make prop for driving license > also need to initialize it in AccountController in ExternalLoginConfirmation action
+
+
+ =============================
+ Performance Optimization
+ =============================
+ **most performance can be optimized by optimizing sql quries for db 
+ Glimpse : to diagnosis performance
+ ----------------------------------
+ in console > install-package glimpse.mvc5 > install-package glimpse.ef6 > run app > navigate to glimpse like: https://localhost:44369/glimpse.axd > and check for more time execution part
+
+ Output Cache: L-104
+ ------------
+ cache can be helpful for optimizing performance when someone start the app it stored the rendered html on cache, and next time 
+ it will serve from the cache. 
+ Now enable cache > decorate any action wiht [output cache] attr. > for disable caching look into lecture [OutputCache(Duration = 0, VaryByParam ='*', NoStore = true)]
+ Caching partucular data: L-105
+ ------------------------
+ Disabling Session:
+ ---------------------
+ web.config > <sytem.web><sessionState mode="Off"></sessionState> <>
+ Client Tire Optimization: L-109
+ -------------------------
+
+ =========================================================
+ Building a feature end to end process: A Rental Form L113
+ =========================================================
+
+ Understand the problem:
+ -----------------------
+  **in this form user can look up a customer + movies want rents. After sumbit the form there will be a toast confirmation
+  UseCase: Add the ability to record rentals. 
+		   Explanation: the customer comes to counter and gives the movies to staff for record it.Staff identify the customer in
+		   the  app and then add movies in the list of movie the customer wants to rent.
+Approach: we can start either from front end or back end both are ok. Here we will start from back end so there is less complexity that can arise from a complex UI.
+			We focus on the input/output of the app.
+			Input:Id of customer and movies they want to rent
+			Output: For now there is no output like order receipt or something
+Action: In the back end we need an action that our front end will call later. we can do it in MVC contorller /Api Controller. It depends what we want to return
+		MVC Contr: if we want to return a mark up then it is appropriate
+		API Contr: if we want to return data.
+	*In our case we dont need markup from server as we will use js to clear the form and toast notification. So we can use API controller
+
+ Domain Modeling:
+ ----------------
+-  We need to create a Dto containing cusotmer Id property and and a list of movie id property as a customer can rent more than one movie
+- the this is that from UML diagram we find that the realtionship between the customer and movie are many to many as a customer can rent many movie and a movie can be rented by many customer 
+ - in this cas we need to make many to one : we need a association attributes in the between i.e. we need a class for association
+ -Here we make an association class named Rental. this is a domain class where we put attribute for table Id, dateRented, dateReturned, and customer - movie properties for referencing
+ - we also need to add DdSet<Renatl> in ApplicationDbContext of IdentityModle class.
+ - then Create Migration and update database
+
+ Building API: L:117 ?
+ ------------
+ - create a new API controler named NewRentalController > create an action named CreateNewRental > it is a [HttpPost] as we post data from form
+ - here we need to load the customer and movies based on the id of them. and then for each movie we need to create a newRental object for each movie for given customer and add it to DB
+ - we also need to check the availablity of movie > availability = NumberInStock - ActiveRentals(rental dont have returned date
+ -however the above calculation for each movie will have impact on performance as every time it need to calculate and for growing data it will impact on performance
+ - Alternatively, we can add a new property to Movie class i.e. NumberAvailable > initially it is same as stock > but when a customer rent that movie decreases by one and when return increases by one
+ - it will make our query to db more simplier. For this we need to:
+		= add a property to movie class >  public byte NumberAvailable > create a migration
+		= in the new migration .cs file write a Sql query for setting the intial stock as avialble stock > Sql("UPDATE Movies SET NumberAvailable = NumberInStock");
+		= reduce the NumberAvailable in foreach block of API action
+
+ Edge Cases: 118
+ ------------
+ *there can be 4 edge cases. What are them
+ 1. CustomerId is invalid
+ 2. No MovieIds i.e. there is no movie so the list is empty
+ 3. One or more MovieIds are invalid
+ 4.One or more movies are not available
+** we can use if statemnts to check each cases and explicitly return error message which is good for public API. However for an internala API like this one it is better
+  to go with "Opetmestic" approach not defensive one:
+  1. for customer we use Single method instead of SingleOrDefault
+  2. for movies we only check the avialabilty i.e. if NumberAvailable == 0 we return a error message
+
+Fron End:
+---------
+* there is a different way to post data to server which is faster. we use Ajax instead posting data using traditional Html form
+>> but first we need to create view as per controller > so crate a controller named RentalsController thru MVC5 empty controller
+ > rename it as New > in the view > as we want to use Ajax to post data we use raw htim form as we dont want to use action > the data need to show in same page instantly
+ > we can use Zencoding for faster html > div.form-group>label+input[type='text'].from-control > press tab
+ > also put a button link in the navbar of rental option > shared > _navbar.chtml >
+
+ Auto Completion:
+ ----------------
+ *in our new form for Rental we want to add autocompletion and search 
+ >> for auto-completion we will use a plugin of twitter > in console > install-package Twitter.Typeahead
+  > go to bundle_config > add in lib > ~/Scripts/typeahead.bundle.js"
+  > we also need to borrow some style from typahead > search for typeahed.js in browser > Examples > we want the Basic > view soruce > ../css/example.css > copy from .typeahed to .tt-suggestin p {} 
+  > add a new stylesheet called typeahead.css > add it to css bundle
+  > go to Example page > click Remote > copy the js code from there > go to new form > add script section and paste the code inside documetn.ready() > change some part of it like bestPictures to customers
+  > change the 'value' to 'name' as customers dont hve abt value and we want them by name > delete Prefetch > in Remote change url to  url: '/api/customers?query=%QUERY',
+  > change the id in typeahead to customers and assing the id in customer textBox > also change typeahead(null) parm to > 
+				:	:mimLength: 3, // need 3 char to type for a search
+					highlight: true,
+> change name - customers, display - name , source - customers > also add > .on("typeahead-select", function(e, customer) {
+                vm.customerId = customer.id; to typeahead > vm is a declared empty object to hold the csutomerId from front end. so that later we can send the vm to webApi
+> do the same for movie > but we want to add it in a list > create li for movie in form before button > but here inside the callback function we append the list as : $("#movies").append("<li>" + movie.name + "</li>"); to update DOM
+
+Filtering record:
+----------------
+* Now we are getting more than on name from server while typing three letter. We need to filter it to get only the desired one
+ - go API - customersController > in getCustomers provide a param like GetCustomers(string query = null) > break the customerDto to two parts as customerQuery and customerDto as per code
+
+POST the Rental form:
+---------------------
+- first we need to give an id (id =newRental) to this form to use with jQuery like
+		$("#newRental").submit(function(e) {
+			//see code in solution
+		})
+- 
+Toast Notification:
+-------------------
+* we will use a very popular jQuery plugin called toaster. So
+package console > install-package toastr > bundleConfig > css bundle > ~/Content/site.css" > and in lib > 
+> go to form > use toastr.success("message) in .done section > 
+

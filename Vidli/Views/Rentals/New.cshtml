@@ -1,0 +1,111 @@
+﻿
+@model dynamic
+
+@{
+    ViewBag.Title = "New Rental Form";
+}
+
+<h2>New Rental Form</h2>
+<form id ="newRental">
+    <div  class="form-group">
+            <label>Customer</label>
+        @*adding another div as the text boxes are wraped wiht another div by typeahead as poition relative 
+            for better visual alignment of both textbox and add style for this class at typeahead.css*@
+        <div class="tt-container"> 
+            <input type="text" id="customer" value="" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">    
+            <label>Movie</label>
+        <div class="tt-container">
+            <input type="text" id="movie" value="" class="form-control" />
+        </div>
+    </div>
+    @*ul to contain movie selection. also used bootstrap grid system for better look n feel*@
+    <div class="row">
+        <div class="col-md-3 col-sm-3">
+            <ul id="movies" class="list-group"></ul>
+        </div>
+    </div>
+    
+
+    <button class="btn btn-primary">Submit</button>
+</form>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            //declare veiwmodel object for client!!
+            var vm = {
+                MovieIds:[] // to hold the movie id list
+            };
+            //copied code from https://twitter.github.io/typeahead.js/examples/#remote
+            //-------------------------------------------------------------------------
+            var customers = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/customers?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#customer').typeahead({
+                minLength: 3,
+                highlight: true
+            }, {
+                name: 'customers',
+                display: 'name',
+                source: customers
+                }).on("typeahead:select", function(e, customer) {
+                    vm.CustomerId = customer.id;
+                });
+
+            //for movie
+            var movies = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/movies?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+            $('#movie').typeahead({
+                minLength: 3,
+                highlight: true
+            }, {
+                name: 'movies',
+                display: 'name',
+                source: movies
+                }).on("typeahead:select", function (e, movie) {
+                    //for list of movies
+                    $("#movies").append("<li class='list-group-item'>" + movie.name + "</li>");
+                    //we need to set the value of movie to textbox after the selection but not with .val() with typeahead syntax
+                    $("#movie").typeahead("val", "");
+                    //psuh the id to movieIds array
+                    vm.MovieIds.push(movie.id);
+                });
+
+            //to post the form
+            $("#newRental").submit(function(e) {
+                //to prevent submit form normally as usual
+                e.preventDefault();
+                //instead of normal psot we will use ajax
+                $.ajax({
+                        url: "/api/newRental",
+                        method: "post",
+                        data: vm
+                    })
+                .done(function() {
+                        toastr.success("Rental successflly recorded");
+                    })
+                .fail(function() {
+                        toastr.error("Somehting unexpected happened"); 
+                });
+            });
+        });
+    </script>
+
+}
+

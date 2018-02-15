@@ -11,6 +11,9 @@ namespace Vidli
 
             //set authourize attr. globally
             filters.Add(new AuthorizeAttribute());
+
+            //for ssl secure channel
+            filters.Add(new RequireHttpsAttribute());
         }
     }
 }

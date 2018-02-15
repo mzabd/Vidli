@@ -54,9 +54,9 @@ namespace Vidli
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "180857716013658",
+               appSecret: "c75972e36dcaf984e7537034cdb0042f");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
@@ -66,3 +66,6 @@ namespace Vidli
         }
     }
 }
+
+
+//https://localhost:44369/signin-facebook

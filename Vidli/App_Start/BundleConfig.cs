@@ -15,7 +15,9 @@ namespace Vidli
                         "~/Scripts/respond.js",
                         "~/Scripts/bootbox.js",
                         "~/Scripts/datatables/jquery.datatables.js",
-                        "~/Scripts/datatables/datatables.bootstrap.js"
+                        "~/Scripts/datatables/datatables.bootstrap.js",
+                        "~/Scripts/typeahead.bundle.js",
+                        "~/Scripts/toastr.js"
                 ));
 
 
@@ -32,7 +34,10 @@ namespace Vidli
                       "~/Content/bootstrap-lumen.css", "~/Content/themes/base/jquery-ui.min.css",
                       "~/Content/themes/base/jquery.ui.datepicker.css",
                       "~/content/datatables/css/datatables.bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/toastr.css",
+                      "~/Content/site.css",
+                      "~/Content/typeahead.css"
+                      ));
         }
     }
 }
