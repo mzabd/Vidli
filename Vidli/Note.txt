@@ -604,3 +604,19 @@ For example in the rental new form we can add this inside script section as > @S
 		> before (n#ewRental).validate > .validatro.addMethod("validCustomer", function(... >
 		> to use it > in the customer input field > data-rule-validCustomer = "true"
 		> we need to clear form, reset vm in .done()
+
+=====================
+Deploying the app:130
+=====================
+- Right click the project > publish > there are some options to publish > for our purpose we slect folder > in profile we choose file system > 
+- Deploy DB: if we dont select webDeployment with code first migratino we need to deploy db manually:
+  >> Conslole > update-database -script -SourceMigration:0 > from this command we will get a sql script for all migrations and this is for the initial deployment
+  >> for next release we dont need to do it rather > update-database -script -sourceMigration:nameof the migration that is starts for this new release
+  >> Build Config: 132
+  >> Application Setting: for example we can set like email server name for email service. We need to set it in web.config
+      > there is a section call appSetting, where we can store app settign as key value pair
+	  > Here we have added the fb authentication which are hard coded we can change that by set it in appSetting: see code in web.config
+	  > now change in startup.Auth.cs >                appId: ConfigurationManager.AppSettings["FacebookAppId"],
+														appSecret: ConfigurationManager.AppSettings["FacebookAppSecret"]);
+
+>> Securing Config setting: 134
